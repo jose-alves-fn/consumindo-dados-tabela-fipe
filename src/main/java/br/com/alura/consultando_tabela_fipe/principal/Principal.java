@@ -4,6 +4,7 @@ import br.com.alura.consultando_tabela_fipe.model.DadosVeiculo;
 import br.com.alura.consultando_tabela_fipe.service.ConsumoAPI;
 import br.com.alura.consultando_tabela_fipe.service.ConverteDados;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Principal {
@@ -32,8 +33,8 @@ public class Principal {
             System.out.println("Busca inválida");
 
         String json = consumo.obterDados(endereco);
-//        DadosVeiculo dadosSerie = conversor.obterDados(json, DadosVeiculo.class);
-        System.out.println(json);
+        List<DadosVeiculo> marcas = conversor.obterLista(json, DadosVeiculo.class);
+        System.out.println(marcas);
 
 
 
