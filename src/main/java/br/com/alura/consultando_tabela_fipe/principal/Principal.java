@@ -4,6 +4,7 @@ import br.com.alura.consultando_tabela_fipe.model.DadosVeiculo;
 import br.com.alura.consultando_tabela_fipe.service.ConsumoAPI;
 import br.com.alura.consultando_tabela_fipe.service.ConverteDados;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,12 +33,22 @@ public class Principal {
         } else
             System.out.println("Busca inválida");
 
-        String json = consumo.obterDados(endereco);
+        String json = consumo.obterDadosAPI(endereco);
         List<DadosVeiculo> marcas = conversor.obterLista(json, DadosVeiculo.class);
-        System.out.println(marcas);
+        marcas.stream()
+            .sorted(Comparator.comparing(DadosVeiculo::codigo))
+                    .forEach(System.out::println);
 
+        System.out.println("\n***********************************************");
+        System.out.println("Informe o código do veículo que deseja pesquisar:");
+        String escolhaCOD = leitura.nextLine();
+        endereco = URL_BASE + escolhaMenu + MARCAS + escolhaCOD + "/modelos";
 
-
+        json = consumo.obterDadosAPI(endereco);
+        List<DadosVeiculo> modelos = conversor.obterLista(json, DadosVeiculo.class);
+        modelos.stream()
+                .sorted(Comparator.comparing(DadosVeiculo::codigo))
+                .forEach(System.out::println);
 
 
     }

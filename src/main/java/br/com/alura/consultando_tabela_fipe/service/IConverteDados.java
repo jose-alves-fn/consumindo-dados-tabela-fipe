@@ -13,4 +13,5 @@ public interface IConverteDados {
 
     // Na tabela Fipe o retorno é uma lista contendo JSON
     <T> List<T> obterLista(String json, Class<T> classe);
+
 }
