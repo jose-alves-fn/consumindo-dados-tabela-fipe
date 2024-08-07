@@ -1,5 +1,6 @@
 package br.com.alura.consultando_tabela_fipe.principal;
 
+import br.com.alura.consultando_tabela_fipe.model.DadosModelos;
 import br.com.alura.consultando_tabela_fipe.model.DadosVeiculo;
 import br.com.alura.consultando_tabela_fipe.service.ConsumoAPI;
 import br.com.alura.consultando_tabela_fipe.service.ConverteDados;
@@ -16,6 +17,7 @@ public class Principal {
 
     private final String URL_BASE = "https://parallelum.com.br/fipe/api/v1/";
     private final String MARCAS = "/marcas";
+    private final String MODELOS = "/modelos";
 
     public void exibeMenu() {
         System.out.println("\n*************** Consulta a Tabela Fipe ***************");
@@ -33,20 +35,21 @@ public class Principal {
         } else
             System.out.println("Busca inválida");
 
-        String json = consumo.obterDadosAPI(endereco);
+        String json = consumo.obterDadosAPI(endereco); // Endereço retorna uma lista de objetos
         List<DadosVeiculo> marcas = conversor.obterLista(json, DadosVeiculo.class);
         marcas.stream()
             .sorted(Comparator.comparing(DadosVeiculo::codigo))
                     .forEach(System.out::println);
 
         System.out.println("\n***********************************************");
-        System.out.println("Informe o código do veículo que deseja pesquisar:");
-        String escolhaCOD = leitura.nextLine();
-        endereco = URL_BASE + escolhaMenu + MARCAS + escolhaCOD + "/modelos";
+        System.out.println("Informe o código da marca que deseja pesquisar:");
+        String escolhaMarca = leitura.nextLine();
+        endereco = endereco + "/" + escolhaMarca + MODELOS;
 
-        json = consumo.obterDadosAPI(endereco);
-        List<DadosVeiculo> modelos = conversor.obterLista(json, DadosVeiculo.class);
-        modelos.stream()
+        json = consumo.obterDadosAPI(endereco); // Endereço retorna objeto JSON com um dois atributos
+        DadosModelos modelosLista = conversor.obterDados(json, DadosModelos.class);
+
+        modelosLista.modelos().stream()
                 .sorted(Comparator.comparing(DadosVeiculo::codigo))
                 .forEach(System.out::println);
 
